@@ -3,10 +3,15 @@ AI Multi-Resume Ranking Agent
 Main application entry point
 """
 
+from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from app.routers import upload, rank
 from app.config import settings
+
+BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI(
     title="AI Multi-Resume Ranking Agent",
@@ -27,22 +32,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# API routes
 app.include_router(upload.router, prefix="/upload", tags=["Upload"])
 app.include_router(rank.router, prefix="/rank", tags=["Rank"])
 
+# Static files (CSS, JS)
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
-@app.get("/", tags=["Health"])
-async def root():
-    return {
-        "service": "AI Multi-Resume Ranking Agent",
-        "version": "1.0.0",
-        "status": "running",
-        "endpoints": {
-            "upload": "POST /upload — Submit job description + resumes",
-            "rank": "POST /rank — Rank candidates against job description",
-            "docs": "GET /docs — Interactive API documentation",
-        },
-    }
+
+@app.get("/", tags=["UI"], include_in_schema=False)
+async def serve_ui():
+    """Serve the web UI."""
+    return FileResponse(str(BASE_DIR / "static" / "index.html"))
 
 
 @app.get("/health", tags=["Health"])
