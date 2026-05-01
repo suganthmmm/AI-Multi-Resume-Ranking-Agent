@@ -1,0 +1,23 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+pydantic-settings
+
+# Document parsing
+pdfplumber
+python-docx
+
+# Text splitting (LangChain)
+langchain
+langchain-text-splitters
+
+# Vector database
+chromadb
+
+# AI / LLM
+groq
+
+# Utilities
+python-dotenv
+aiofiles

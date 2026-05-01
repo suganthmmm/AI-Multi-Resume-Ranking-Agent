@@ -1,0 +1,119 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.14.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\sugan\AppData\Local\Programs\Python\Python314\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\sugan\OneDrive\Desktop\Resume summrizer\files (1)\ai-resume-ranking-agent\ai-resume-ranking-agent
+plugins: anyio-4.12.1, langsmith-0.8.0, asyncio-1.3.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 23 items
+
+tests/test_agent.py::TestHealthEndpoints::test_root FAILED               [  4%]
+tests/test_agent.py::TestHealthEndpoints::test_health PASSED             [  8%]
+tests/test_agent.py::TestParser::test_clean_text_removes_extra_spaces PASSED [ 13%]
+tests/test_agent.py::TestParser::test_clean_text_strips PASSED           [ 17%]
+tests/test_agent.py::TestParser::test_split_into_sections_returns_dict PASSED [ 21%]
+tests/test_agent.py::TestParser::test_unsupported_file_raises PASSED     [ 26%]
+tests/test_agent.py::TestScorer::test_strong_candidate_scores_higher PASSED [ 30%]
+tests/test_agent.py::TestScorer::test_score_in_range PASSED              [ 34%]
+tests/test_agent.py::TestScorer::test_matched_skills_subset_of_required PASSED [ 39%]
+tests/test_agent.py::TestScorer::test_missing_skills_detected PASSED     [ 43%]
+tests/test_agent.py::TestScorer::test_weighted_formula PASSED            [ 47%]
+tests/test_agent.py::TestScorer::test_empty_skills_resume PASSED         [ 52%]
+tests/test_agent.py::TestSessionStore::test_save_and_retrieve FAILED     [ 56%]
+tests/test_agent.py::TestSessionStore::test_missing_session FAILED       [ 60%]
+tests/test_agent.py::TestSessionStore::test_delete PASSED                [ 65%]
+tests/test_agent.py::TestUploadEndpoint::test_missing_jd_returns_400 PASSED [ 69%]
+tests/test_agent.py::TestUploadEndpoint::test_missing_resumes_returns_422_or_400 PASSED [ 73%]
+tests/test_agent.py::TestUploadEndpoint::test_too_many_resumes_returns_400 FAILED [ 78%]
+tests/test_agent.py::TestUploadEndpoint::test_unsupported_file_type_returns_415 PASSED [ 82%]
+tests/test_agent.py::TestUploadEndpoint::test_successful_upload FAILED   [ 86%]
+tests/test_agent.py::TestRankEndpoint::test_invalid_session_returns_404 PASSED [ 91%]
+tests/test_agent.py::TestRankEndpoint::test_successful_ranking PASSED    [ 95%]
+tests/test_agent.py::TestRankEndpoint::test_rank_response_schema FAILED  [100%]
+
+================================== FAILURES ===================================
+________________________ TestHealthEndpoints.test_root ________________________
+tests\test_agent.py:81: in test_root
+    assert r.status_code == 200
+E   assert 404 == 200
+E    +  where 404 = <Response [404 Not Found]>.status_code
+___________________ TestSessionStore.test_save_and_retrieve ___________________
+tests\test_agent.py:168: in test_save_and_retrieve
+    assert len(session_store.get_resumes("test-123")) == 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'SessionStore' object has no attribute 'get_resumes'
+____________________ TestSessionStore.test_missing_session ____________________
+tests\test_agent.py:174: in test_missing_session
+    assert session_store.get_resumes("nonexistent-id") is None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'SessionStore' object has no attribute 'get_resumes'
+____________ TestUploadEndpoint.test_too_many_resumes_returns_400 _____________
+tests\test_agent.py:213: in test_too_many_resumes_returns_400
+    with patch("app.routers.upload.extract_jd_features") as mock_jd, \
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\sugan\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1503: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+C:\Users\sugan\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1473: in get_original
+    raise AttributeError(
+E   AttributeError: <module 'app.routers.upload' from 'C:\\Users\\sugan\\OneDrive\\Desktop\\Resume summrizer\\files (1)\\ai-resume-ranking-agent\\ai-resume-ranking-agent\\app\\routers\\upload.py'> does not have the attribute 'extract_jd_features'
+__________________ TestUploadEndpoint.test_successful_upload __________________
+C:\Users\sugan\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1429: in patched
+    with self.decoration_helper(patched,
+C:\Users\sugan\AppData\Local\Programs\Python\Python314\Lib\contextlib.py:141: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+C:\Users\sugan\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1411: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\sugan\AppData\Local\Programs\Python\Python314\Lib\contextlib.py:530: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+C:\Users\sugan\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1503: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+C:\Users\sugan\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1473: in get_original
+    raise AttributeError(
+E   AttributeError: <module 'app.routers.upload' from 'C:\\Users\\sugan\\OneDrive\\Desktop\\Resume summrizer\\files (1)\\ai-resume-ranking-agent\\ai-resume-ranking-agent\\app\\routers\\upload.py'> does not have the attribute 'extract_resume_features'
+_________________ TestRankEndpoint.test_rank_response_schema __________________
+tests\test_agent.py:306: in test_rank_response_schema
+    with patch("app.ranker.generate_explanation") as mock_exp, \
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\sugan\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1503: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+C:\Users\sugan\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1473: in get_original
+    raise AttributeError(
+E   AttributeError: <module 'app.ranker' from 'C:\\Users\\sugan\\OneDrive\\Desktop\\Resume summrizer\\files (1)\\ai-resume-ranking-agent\\ai-resume-ranking-agent\\app\\ranker.py'> does not have the attribute 'generate_explanation'
+============================== warnings summary ===============================
+app\config.py:13
+  C:\Users\sugan\OneDrive\Desktop\Resume summrizer\files (1)\ai-resume-ranking-agent\ai-resume-ranking-agent\app\config.py:13: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class Settings(BaseSettings):
+
+..\..\..\..\..\..\AppData\Local\Programs\Python\Python314\Lib\site-packages\langchain_core\_api\deprecation.py:25
+  C:\Users\sugan\AppData\Local\Programs\Python\Python314\Lib\site-packages\langchain_core\_api\deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.
+    from pydantic.v1.fields import FieldInfo as FieldInfoV1
+
+..\..\..\..\..\..\AppData\Local\Programs\Python\Python314\Lib\site-packages\chromadb\telemetry\opentelemetry\__init__.py:128
+  C:\Users\sugan\AppData\Local\Programs\Python\Python314\Lib\site-packages\chromadb\telemetry\opentelemetry\__init__.py:128: DeprecationWarning: 'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16; use inspect.iscoroutinefunction() instead
+    if asyncio.iscoroutinefunction(f):
+
+app\agent.py:24
+  C:\Users\sugan\OneDrive\Desktop\Resume summrizer\files (1)\ai-resume-ranking-agent\ai-resume-ranking-agent\app\agent.py:24: FutureWarning: 
+  
+  All support for the `google.generativeai` package has ended. It will no longer be receiving 
+  updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+  See README for more details:
+  
+  https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+  
+    import google.generativeai as genai
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_agent.py::TestHealthEndpoints::test_root - assert 404 == 200
+FAILED tests/test_agent.py::TestSessionStore::test_save_and_retrieve - Attrib...
+FAILED tests/test_agent.py::TestSessionStore::test_missing_session - Attribut...
+FAILED tests/test_agent.py::TestUploadEndpoint::test_too_many_resumes_returns_400
+FAILED tests/test_agent.py::TestUploadEndpoint::test_successful_upload - Attr...
+FAILED tests/test_agent.py::TestRankEndpoint::test_rank_response_schema - Att...
+================== 6 failed, 17 passed, 4 warnings in 2.12s ===================
